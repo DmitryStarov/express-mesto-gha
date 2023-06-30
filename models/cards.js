@@ -16,12 +16,14 @@ const cardSchema = new Schema(
     },
     owner: {
       type: ObjectId,
+      ref: 'user',
       required: true,
     },
-    likes: {
+    likes: [{
       type: ObjectId,
+      ref: 'user',
       default: [],
-    },
+    }],
     createdAt: {
       type: Date,
       default: Date.now,

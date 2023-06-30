@@ -6,8 +6,8 @@ module.exports.getUsers = (req, res) => {
     .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
 };
 module.exports.getUserInfo = (req, res) => {
-  const { id } = req.params;
-  User.findById(id)
+  const { userId } = req.params;
+  User.findById(userId)
     .then((user) => res.send({ data: user }))
     .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
 };
