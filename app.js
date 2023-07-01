@@ -6,7 +6,6 @@ const routeUsers = require('./routes/users');
 const routeCards = require('./routes/cards');
 
 const app = express();
-//  кинуть в utils
 const URL = 'mongodb://localhost:27017/mestodb';
 const { PORT = 3000 } = process.env;
 mongoose.connect(URL);
