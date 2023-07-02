@@ -46,15 +46,15 @@ module.exports.postUser = (req, res) => {
     });
 };
 module.exports.patchUser = (req, res) => {
-  const { name, about } = req.body;
+  const { name, about, avatar } = req.body;
   User
-    .findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
+    .findByIdAndUpdate(req.user._id, { name, about, avatar }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
         res.status(NOT_FOUND_STATUS).send({ message: USER_NOT_FOUND_MESSAGE });
         return;
       }
-      res.send({ user });
+      res.send({ name, about, avatar });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
