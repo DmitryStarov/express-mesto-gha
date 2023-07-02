@@ -4,10 +4,10 @@ const {
   NOT_FOUND_STATUS,
   INTERNAL_SERVER_STATUS,
   SERVER_ERROR_MESSAGE,
-  INVALID__ADD_USER_MESSAGE,
+  INVALID_ADD_USER_MESSAGE,
   USER_NOT_FOUND_MESSAGE,
-  INVALID__UPDATE_USER_MESSAGE,
-  INVALID__UPDATE_AVATAR_MESSAGE,
+  INVALID_UPDATE_USER_MESSAGE,
+  INVALID_UPDATE_AVATAR_MESSAGE,
 } = require('../utils/constants');
 
 module.exports.getUsers = (req, res) => {
@@ -39,7 +39,7 @@ module.exports.postUser = (req, res) => {
     .then(() => res.send({ name, about, avatar }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(BAD_REQUEST_STATUS).send({ message: INVALID__ADD_USER_MESSAGE });
+        res.status(BAD_REQUEST_STATUS).send({ message: INVALID_ADD_USER_MESSAGE });
         return;
       }
       res.status(INTERNAL_SERVER_STATUS).send({ message: SERVER_ERROR_MESSAGE });
@@ -58,7 +58,7 @@ module.exports.patchUser = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(BAD_REQUEST_STATUS).send({ message: INVALID__UPDATE_USER_MESSAGE });
+        res.status(BAD_REQUEST_STATUS).send({ message: INVALID_UPDATE_USER_MESSAGE });
         return;
       }
       res.status(INTERNAL_SERVER_STATUS).send({ message: SERVER_ERROR_MESSAGE });
@@ -77,7 +77,7 @@ module.exports.patchAvatar = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(BAD_REQUEST_STATUS).send({ message: INVALID__UPDATE_AVATAR_MESSAGE });
+        res.status(BAD_REQUEST_STATUS).send({ message: INVALID_UPDATE_AVATAR_MESSAGE });
         return;
       }
       res.status(INTERNAL_SERVER_STATUS).send({ message: SERVER_ERROR_MESSAGE });
