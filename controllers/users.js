@@ -20,7 +20,7 @@ module.exports.getUserInfo = (req, res) => {
   User.findById(userId)
     .then((user) => {
       if (!user) {
-        res.status(NOT_FOUND_STATUS).send({ message: USER_NOT_FOUND_MESSAGE });
+        res.status(BAD_REQUEST_STATUS).send({ message: USER_NOT_FOUND_MESSAGE });
         return;
       }
       res.send({ user });

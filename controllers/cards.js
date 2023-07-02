@@ -62,7 +62,7 @@ module.exports.putLike = (req, res) => {
     )
     .then((card) => {
       if (!card) {
-        res.status(NOT_FOUND_STATUS).send({ message: INVALID_ID_CARD_MESSAGE });
+        res.status(BAD_REQUEST_STATUS).send({ message: INVALID_ID_CARD_MESSAGE });
         return;
       }
       res.send({ card });
@@ -89,7 +89,7 @@ module.exports.deleteLike = (req, res) => {
     )
     .then((card) => {
       if (!card) {
-        res.status(NOT_FOUND_STATUS).send({ message: INVALID_ID_CARD_MESSAGE });
+        res.status(BAD_REQUEST_STATUS).send({ message: INVALID_ID_CARD_MESSAGE });
         return;
       }
       res.send({ card });
