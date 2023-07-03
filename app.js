@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const routeUsers = require('./routes/users');
 const routeCards = require('./routes/cards');
+const { NOT_FOUND } = require('./utils/constants');
 
 const app = express();
 const URL = 'mongodb://localhost:27017/mestodb';
@@ -20,8 +21,6 @@ app.use((req, res, next) => {
 app.use('/users', routeUsers);
 app.use('/cards', routeCards);
 app.use('*', (req, res) => {
-  res.status(404).send({ message: 'Страница не найдена' });
+  res.status(NOT_FOUND).send({ message: 'Страница не найдена' });
 });
-app.listen(PORT, () => {
-  console.log('start serv');
-});
+app.listen(PORT);
