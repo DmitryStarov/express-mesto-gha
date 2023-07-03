@@ -69,11 +69,11 @@ module.exports.putLike = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(BAD_REQUEST_STATUS).send({ message: INVALID_LIKE_CARD_MESSAGE });
+        res.status(NOT_FOUND_STATUS).send({ message: INVALID_LIKE_CARD_MESSAGE });
         return;
       }
       if (err.name === 'CastError') {
-        res.status(NOT_FOUND_STATUS).send({ message: INVALID_ID_CARD_MESSAGE });
+        res.status(BAD_REQUEST_STATUS).send({ message: INVALID_ID_CARD_MESSAGE });
         return;
       }
       res.status(INTERNAL_SERVER_STATUS).send({ message: SERVER_ERROR_MESSAGE });
@@ -89,7 +89,7 @@ module.exports.deleteLike = (req, res) => {
     )
     .then((card) => {
       if (!card) {
-        res.status(BAD_REQUEST_STATUS).send({ message: INVALID_ID_CARD_MESSAGE });
+        res.status(NOT_FOUND_STATUS).send({ message: INVALID_ID_CARD_MESSAGE });
         return;
       }
       res.send({ card });
@@ -100,7 +100,7 @@ module.exports.deleteLike = (req, res) => {
         return;
       }
       if (err.name === 'CastError') {
-        res.status(NOT_FOUND_STATUS).send({ message: INVALID_ID_CARD_MESSAGE });
+        res.status(BAD_REQUEST_STATUS).send({ message: INVALID_ID_CARD_MESSAGE });
         return;
       }
       res.status(INTERNAL_SERVER_STATUS).send({ message: SERVER_ERROR_MESSAGE });

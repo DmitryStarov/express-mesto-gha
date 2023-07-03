@@ -27,7 +27,7 @@ module.exports.getUserInfo = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(NOT_FOUND_STATUS).send({ message: USER_NOT_FOUND_MESSAGE });
+        res.status(BAD_REQUEST_STATUS).send({ message: USER_NOT_FOUND_MESSAGE });
         return;
       }
       res.status(INTERNAL_SERVER_STATUS).send({ message: SERVER_ERROR_MESSAGE });
@@ -51,14 +51,14 @@ module.exports.patchUser = (req, res) => {
     .findByIdAndUpdate(req.user._id, { name, about, avatar }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
-        res.status(NOT_FOUND_STATUS).send({ message: USER_NOT_FOUND_MESSAGE });
+        res.status(BAD_REQUEST_STATUS).send({ message: USER_NOT_FOUND_MESSAGE });
         return;
       }
       res.send({ name, about, avatar });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(BAD_REQUEST_STATUS).send({ message: INVALID_UPDATE_USER_MESSAGE });
+        res.status(NOT_FOUND_STATUS).send({ message: INVALID_UPDATE_USER_MESSAGE });
         return;
       }
       res.status(INTERNAL_SERVER_STATUS).send({ message: SERVER_ERROR_MESSAGE });
