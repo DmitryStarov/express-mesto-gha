@@ -34,9 +34,9 @@ module.exports.getUserInfo = (req, res) => {
     });
 };
 module.exports.postUser = (req, res) => {
-  const { name, about, avatar } = req.body;
-  User.create({ name, about, avatar })
-    .then(() => res.send({ name, about, avatar }))
+  const { user } = req.body;
+  User.create({ user })
+    .then(() => res.send({ user }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(BAD_REQUEST_STATUS).send({ message: INVALID_ADD_USER_MESSAGE });
