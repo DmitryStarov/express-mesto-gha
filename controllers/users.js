@@ -66,7 +66,7 @@ module.exports.patchUser = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(NOT_FOUND_STATUS).send({ message: INVALID_UPDATE_USER_MESSAGE });
+        res.status(BAD_REQUEST_STATUS).send({ message: INVALID_UPDATE_USER_MESSAGE });
         return;
       }
       res.status(INTERNAL_SERVER_STATUS).send({ message: SERVER_ERROR_MESSAGE });
