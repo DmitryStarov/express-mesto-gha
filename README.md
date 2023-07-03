@@ -8,8 +8,7 @@
    <img src="https://img.shields.io/badge/-NodeJS-green?style=for-the-badge&logo=node.js&logoColor=white" alt="NodeJS"/>
     <img src="https://img.shields.io/badge/-Express-blue?style=for-the-badge&logo=Express&logoColor=white" alt="Express"/>
    <img src="https://img.shields.io/badge/-MongoDB-gray?style=for-the-badge&logo=MongoDB&logoColor=white" alt="MongoDB"/>
-   <img src="https://img.shields.io/badge/-NPM-F05033.svg?style=for-the-badge&logo=NPM&logoColor=white" alt="NPM"/>
-    <img src="https://img.shields.io/badge/-Postman-orange.svg?style=for-the-badge&logo=Postman&logoColor=white" alt="Postman"/>
+   <img src="https://img.shields.io/badge/-Postman-orange.svg?style=for-the-badge&logo=Postman&logoColor=white" alt="Postman"/>
 </div>
 
 ## Директории
