@@ -45,7 +45,7 @@ module.exports.deleteCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(NOT_FOUND_STATUS).send({ message: CARD_NOT_FOUND_MESSAGE });
+        res.status(BAD_REQUEST_STATUS).send({ message: CARD_NOT_FOUND_MESSAGE });
         return;
       }
       res.status(INTERNAL_SERVER_STATUS).send({ message: SERVER_ERROR_MESSAGE });
@@ -62,18 +62,14 @@ module.exports.putLike = (req, res) => {
     )
     .then((card) => {
       if (!card) {
-        res.status(BAD_REQUEST_STATUS).send({ message: INVALID_ID_CARD_MESSAGE });
+        res.status(NOT_FOUND_STATUS).send({ message: INVALID_ID_CARD_MESSAGE });
         return;
       }
       res.send({ card });
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        res.status(NOT_FOUND_STATUS).send({ message: INVALID_LIKE_CARD_MESSAGE });
-        return;
-      }
-      if (err.name === 'CastError') {
-        res.status(BAD_REQUEST_STATUS).send({ message: INVALID_ID_CARD_MESSAGE });
+      if (err.name === 'ValidationError' || err.name === 'CastError') {
+        res.status(BAD_REQUEST_STATUS).send({ message: INVALID_LIKE_CARD_MESSAGE });
         return;
       }
       res.status(INTERNAL_SERVER_STATUS).send({ message: SERVER_ERROR_MESSAGE });
@@ -95,12 +91,8 @@ module.exports.deleteLike = (req, res) => {
       res.send({ card });
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.name === 'ValidationError' || err.name === 'CastError') {
         res.status(BAD_REQUEST_STATUS).send({ message: INVALID_LIKE_CARD_MESSAGE });
-        return;
-      }
-      if (err.name === 'CastError') {
-        res.status(BAD_REQUEST_STATUS).send({ message: INVALID_ID_CARD_MESSAGE });
         return;
       }
       res.status(INTERNAL_SERVER_STATUS).send({ message: SERVER_ERROR_MESSAGE });
