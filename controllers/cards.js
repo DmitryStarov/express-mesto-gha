@@ -1,6 +1,7 @@
 const Card = require('../models/cards');
 
 const {
+  CREATED_STATUS,
   BAD_REQUEST_STATUS,
   NOT_FOUND_STATUS,
   INTERNAL_SERVER_STATUS,
@@ -22,7 +23,7 @@ module.exports.postCard = (req, res) => {
   Card
     .create({ name, link, owner: req.user._id })
     .then((card) => {
-      res.send({ card });
+      res.status(CREATED_STATUS).send({ card });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -68,7 +69,7 @@ module.exports.putLike = (req, res) => {
       res.send({ card });
     })
     .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
+      if (err.name === 'CastError') {
         res.status(BAD_REQUEST_STATUS).send({ message: INVALID_LIKE_CARD_MESSAGE });
         return;
       }
@@ -91,7 +92,7 @@ module.exports.deleteLike = (req, res) => {
       res.send({ card });
     })
     .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
+      if (err.name === 'CastError') {
         res.status(BAD_REQUEST_STATUS).send({ message: INVALID_LIKE_CARD_MESSAGE });
         return;
       }

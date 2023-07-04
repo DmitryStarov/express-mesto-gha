@@ -1,7 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-// eslint-disable-next-line import/no-extraneous-dependencies
-const bodyParser = require('body-parser');
 const routeUsers = require('./routes/users');
 const routeCards = require('./routes/cards');
 const { NOT_FOUND_STATUS } = require('./utils/constants');
@@ -10,8 +8,8 @@ const app = express();
 const URL = 'mongodb://localhost:27017/mestodb';
 const { PORT = 3000 } = process.env;
 mongoose.connect(URL);
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use((req, res, next) => {
   req.user = {
     _id: '64a056b6fe73546c3bbab178', // вставьте сюда _id созданного в предыдущем пункте пользователя

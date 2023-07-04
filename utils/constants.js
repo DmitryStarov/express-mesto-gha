@@ -1,4 +1,5 @@
 const OK_STATUS = 200;
+const CREATED_STATUS = 201;
 const BAD_REQUEST_STATUS = 400;
 const NOT_FOUND_STATUS = 404;
 const INTERNAL_SERVER_STATUS = 500;
@@ -15,6 +16,7 @@ const INVALID_ID_CARD_MESSAGE = ' Передан несуществующий _i
 
 module.exports = {
   OK_STATUS,
+  CREATED_STATUS,
   BAD_REQUEST_STATUS,
   NOT_FOUND_STATUS,
   INTERNAL_SERVER_STATUS,
