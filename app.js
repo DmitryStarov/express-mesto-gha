@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const routeUsers = require('./routes/users');
-const routeCards = require('./routes/cards');
+const { routeUsers, routeCards } = require('./routes/index');
 const { NOT_FOUND_STATUS } = require('./utils/constants');
 
 const app = express();

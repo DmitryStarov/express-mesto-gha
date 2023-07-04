@@ -52,13 +52,12 @@ module.exports.deleteCard = (req, res) => {
       res.status(INTERNAL_SERVER_STATUS).send({ message: SERVER_ERROR_MESSAGE });
     });
 };
-
-module.exports.putLike = (req, res) => {
+const updateLike = (req, res, data) => {
   const { cardId } = req.params;
   Card
     .findByIdAndUpdate(
       cardId,
-      { $addToSet: { likes: req.user._id } },
+      data,
       { new: true },
     )
     .then((card) => {
@@ -76,26 +75,11 @@ module.exports.putLike = (req, res) => {
       res.status(INTERNAL_SERVER_STATUS).send({ message: SERVER_ERROR_MESSAGE });
     });
 };
+module.exports.putLike = (req, res) => {
+  const newLike = { $addToSet: { likes: req.user._id } };
+  return updateLike(req, res, newLike);
+};
 module.exports.deleteLike = (req, res) => {
-  const { cardId } = req.params;
-  Card
-    .findByIdAndUpdate(
-      cardId,
-      { $pull: { likes: req.user._id } },
-      { new: true },
-    )
-    .then((card) => {
-      if (!card) {
-        res.status(NOT_FOUND_STATUS).send({ message: INVALID_ID_CARD_MESSAGE });
-        return;
-      }
-      res.send({ card });
-    })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(BAD_REQUEST_STATUS).send({ message: INVALID_LIKE_CARD_MESSAGE });
-        return;
-      }
-      res.status(INTERNAL_SERVER_STATUS).send({ message: SERVER_ERROR_MESSAGE });
-    });
+  const removedLike = { $pull: { likes: req.user._id } };
+  return updateLike(req, res, removedLike);
 };
