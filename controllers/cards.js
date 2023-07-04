@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Card = require('../models/cards');
 
 const {
@@ -26,7 +27,7 @@ module.exports.postCard = (req, res) => {
       res.status(CREATED_STATUS).send({ card });
     })
     .catch((err) => {
-      if (err instanceof Error.ValidationError) {
+      if (err instanceof mongoose.Error.ValidationError) {
         res.status(BAD_REQUEST_STATUS).send({ message: INVALID_ADD_CARD_MESSAGE });
         return;
       }
@@ -45,7 +46,7 @@ module.exports.deleteCard = (req, res) => {
       res.send({ card });
     })
     .catch((err) => {
-      if (err instanceof Error.CastError) {
+      if (err instanceof mongoose.Error.CastError) {
         res.status(BAD_REQUEST_STATUS).send({ message: CARD_NOT_FOUND_MESSAGE });
         return;
       }
@@ -68,7 +69,7 @@ const updateLike = (req, res, data) => {
       res.send({ card });
     })
     .catch((err) => {
-      if (err instanceof Error.CastError) {
+      if (err instanceof mongoose.Error.CastError) {
         res.status(BAD_REQUEST_STATUS).send({ message: INVALID_LIKE_CARD_MESSAGE });
         return;
       }

@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const User = require('../models/users');
 const {
   BAD_REQUEST_STATUS,
@@ -26,7 +27,7 @@ module.exports.getUserInfo = (req, res) => {
       res.send({ user });
     })
     .catch((err) => {
-      if (err instanceof Error.CastError) {
+      if (err instanceof mongoose.Error.CastError) {
         res.status(BAD_REQUEST_STATUS).send({ message: USER_NOT_FOUND_MESSAGE });
         return;
       }
@@ -46,7 +47,7 @@ module.exports.postUser = (req, res) => {
       });
     })
     .catch((err) => {
-      if (err instanceof Error.ValidationError) {
+      if (err instanceof mongoose.Error.ValidationError) {
         res.status(BAD_REQUEST_STATUS).send({ message: INVALID_ADD_USER_MESSAGE });
         return;
       }
@@ -64,7 +65,7 @@ const updateUserData = (req, res, data, badRequestMessage) => {
       res.send(user);
     })
     .catch((err) => {
-      if (err instanceof Error.ValidationError) {
+      if (err instanceof mongoose.Error.ValidationError) {
         res.status(BAD_REQUEST_STATUS).send({ message: badRequestMessage });
         return;
       }
