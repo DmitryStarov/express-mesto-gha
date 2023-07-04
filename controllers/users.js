@@ -26,7 +26,7 @@ module.exports.getUserInfo = (req, res) => {
       res.send({ user });
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err instanceof Error.CastError) {
         res.status(BAD_REQUEST_STATUS).send({ message: USER_NOT_FOUND_MESSAGE });
         return;
       }
@@ -46,7 +46,7 @@ module.exports.postUser = (req, res) => {
       });
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err instanceof Error.ValidationError) {
         res.status(BAD_REQUEST_STATUS).send({ message: INVALID_ADD_USER_MESSAGE });
         return;
       }
@@ -64,7 +64,7 @@ const updateUserData = (req, res, data, badRequestMessage) => {
       res.send(user);
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err instanceof Error.ValidationError) {
         res.status(BAD_REQUEST_STATUS).send({ message: badRequestMessage });
         return;
       }

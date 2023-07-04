@@ -26,7 +26,7 @@ module.exports.postCard = (req, res) => {
       res.status(CREATED_STATUS).send({ card });
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err instanceof Error.ValidationError) {
         res.status(BAD_REQUEST_STATUS).send({ message: INVALID_ADD_CARD_MESSAGE });
         return;
       }
@@ -45,7 +45,7 @@ module.exports.deleteCard = (req, res) => {
       res.send({ card });
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err instanceof Error.CastError) {
         res.status(BAD_REQUEST_STATUS).send({ message: CARD_NOT_FOUND_MESSAGE });
         return;
       }
@@ -68,7 +68,7 @@ const updateLike = (req, res, data) => {
       res.send({ card });
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err instanceof Error.CastError) {
         res.status(BAD_REQUEST_STATUS).send({ message: INVALID_LIKE_CARD_MESSAGE });
         return;
       }
