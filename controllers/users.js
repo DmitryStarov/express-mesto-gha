@@ -1,4 +1,6 @@
+/* eslint-disable import/no-extraneous-dependencies */
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 const User = require('../models/users');
 const {
   BAD_REQUEST_STATUS,
@@ -35,11 +37,25 @@ module.exports.getUserInfo = (req, res) => {
     });
 };
 module.exports.postUser = (req, res) => {
-  const { name, about, avatar } = req.body;
-  User.create({ name, about, avatar })
+  const {
+    email,
+    password,
+    name,
+    about,
+    avatar,
+  } = req.body;
+  bcrypt.hash(password, 10)
+    .then((hash) => User.create({
+      email,
+      password: hash,
+      name,
+      about,
+      avatar,
+    }))
     .then((user) => {
       const { _id } = user;
       res.send({
+        email,
         name,
         about,
         avatar,
