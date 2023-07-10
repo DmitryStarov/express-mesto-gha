@@ -1,6 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const User = require('../models/users');
 const {
   BAD_REQUEST_STATUS,
@@ -95,4 +96,15 @@ module.exports.patchUser = (req, res) => {
 module.exports.patchAvatar = (req, res) => {
   const { avatar } = req.body;
   return updateUserData(req, res, { avatar }, INVALID_UPDATE_AVATAR_MESSAGE);
+};
+module.exports.login = (req, res) => {
+  const { email, password } = req.body;
+  return User.findUserByCredentials(email, password)
+    .then((user) => {
+      // создадим токен
+      const token = jwt.sign({ _id: user._id }, 'some-secret-key');
+      // вернём токен
+      res.send({ token });
+    })
+    .catch((err) => res.status(401).send({ message: err.message }));
 };
