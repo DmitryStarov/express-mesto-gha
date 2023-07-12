@@ -109,3 +109,21 @@ module.exports.login = (req, res) => {
     })
     .catch((err) => res.status(401).send({ message: err.message }));
 };
+module.exports.getCurrentUser = (req, res) => {
+  const userId = req.user._id;
+  User.findById(userId)
+    .then((user) => {
+      if (!user) {
+        res.status(BAD_REQUEST_STATUS).send({ message: USER_NOT_FOUND_MESSAGE });
+        return;
+      }
+      res.send(user);
+    })
+    .catch((err) => {
+      if (err instanceof mongoose.Error.ValidationError) {
+        res.status(BAD_REQUEST_STATUS).send({ message: INVALID_ADD_USER_MESSAGE });
+        return;
+      }
+      res.status(INTERNAL_SERVER_STATUS).send({ message: SERVER_ERROR_MESSAGE });
+    });
+};

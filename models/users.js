@@ -36,13 +36,14 @@ const userSchema = new Schema(
       type: String,
       required: true,
       minlength: 8,
+      select: false,
     },
   },
   {
     versionKey: false,
   },
 );
-userSchema.static.findUserByCredentials = (email, password) => this.findOne({ email })
+userSchema.static.findUserByCredentials = (email, password) => this.findOne({ email }).select('+password')
   .then((user) => {
     if (!user) {
       return Promise.reject(new Error('Неправильные почта или пароль'));
