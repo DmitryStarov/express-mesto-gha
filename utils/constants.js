@@ -13,7 +13,7 @@ const INVALID_ADD_CARD_MESSAGE = ' Переданы некорректные д�
 const CARD_NOT_FOUND_MESSAGE = 'Карточка с указанным _id не найдена';
 const INVALID_LIKE_CARD_MESSAGE = 'Переданы некорректные данные для постановки/снятии лайка';
 const INVALID_ID_CARD_MESSAGE = ' Передан несуществующий _id карточки';
-
+const SECRET_KEY = 'some-secret-key';
 module.exports = {
   OK_STATUS,
   CREATED_STATUS,
@@ -29,4 +29,5 @@ module.exports = {
   CARD_NOT_FOUND_MESSAGE,
   INVALID_LIKE_CARD_MESSAGE,
   INVALID_ID_CARD_MESSAGE,
+  SECRET_KEY,
 };

@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const { routeUsers, routeCards } = require('./routes/index');
+const { postUser, login } = require('./controllers/users');
 const { NOT_FOUND_STATUS } = require('./utils/constants');
 
 const app = express();
@@ -15,6 +16,8 @@ app.use((req, res, next) => {
   };
   next();
 });
+app.use('/singin', login);
+app.use('/singup', postUser);
 app.use('/users', routeUsers);
 app.use('/cards', routeCards);
 app.use('*', (req, res) => {

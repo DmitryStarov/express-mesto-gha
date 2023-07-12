@@ -12,6 +12,7 @@ const {
   USER_NOT_FOUND_MESSAGE,
   INVALID_UPDATE_USER_MESSAGE,
   INVALID_UPDATE_AVATAR_MESSAGE,
+  SECRET_KEY,
 } = require('../utils/constants');
 
 module.exports.getUsers = (req, res) => {
@@ -102,7 +103,7 @@ module.exports.login = (req, res) => {
   return User.findUserByCredentials(email, password)
     .then((user) => {
       // создадим токен
-      const token = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, SECRET_KEY, { expiresIn: '7d' });
       // вернём токен
       res.send({ token });
     })
