@@ -3,23 +3,23 @@ const Card = require('../models/cards');
 
 const {
   CREATED_STATUS,
-  BAD_REQUEST_STATUS,
-  NOT_FOUND_STATUS,
-  INTERNAL_SERVER_STATUS,
-  SERVER_ERROR_MESSAGE,
   INVALID_ADD_CARD_MESSAGE,
   CARD_NOT_FOUND_MESSAGE,
   INVALID_LIKE_CARD_MESSAGE,
   INVALID_ID_CARD_MESSAGE,
+  FORBIDDEN_DELETE_CARD_MESSAGE,
 } = require('../utils/constants');
+const BadRequest = require('../errors/BadRequest');
+const NotFound = require('../errors/NotFound');
+const Forbidden = require('../errors/Forbidden');
 
-module.exports.getCards = (req, res) => {
+module.exports.getCards = (req, res, next) => {
   Card
     .find({})
     .then((cards) => res.send({ cards }))
-    .catch(() => res.status(INTERNAL_SERVER_STATUS).send({ message: SERVER_ERROR_MESSAGE }));
+    .catch(next);
 };
-module.exports.postCard = (req, res) => {
+module.exports.postCard = (req, res, next) => {
   const { name, link } = req.body;
   Card
     .create({ name, link, owner: req.user._id })
@@ -28,32 +28,38 @@ module.exports.postCard = (req, res) => {
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
-        res.status(BAD_REQUEST_STATUS).send({ message: INVALID_ADD_CARD_MESSAGE });
-        return;
+        return next(new BadRequest(INVALID_ADD_CARD_MESSAGE));
       }
-      res.status(INTERNAL_SERVER_STATUS).send({ message: SERVER_ERROR_MESSAGE });
+      return next(err);
     });
 };
-module.exports.deleteCard = (req, res) => {
+module.exports.deleteCard = (req, res, next) => {
   const { cardId } = req.params;
   Card
-    .findByIdAndRemove(cardId)
+    .findById(cardId)
+    .orFail(() => {
+      throw new NotFound(CARD_NOT_FOUND_MESSAGE);
+    })
+    .populate(['owner', 'likes'])
     .then((card) => {
-      if (!card) {
-        res.status(NOT_FOUND_STATUS).send({ message: CARD_NOT_FOUND_MESSAGE });
-        return;
+      if (!card.owner.equals(req.user._id)) {
+        throw new Forbidden(FORBIDDEN_DELETE_CARD_MESSAGE);
+      } else {
+        Card.deleteOne(card)
+          .then(() => {
+            res.send({ card });
+          })
+          .catch(next);
       }
-      res.send({ card });
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
-        res.status(BAD_REQUEST_STATUS).send({ message: CARD_NOT_FOUND_MESSAGE });
-        return;
+        return next(new BadRequest(CARD_NOT_FOUND_MESSAGE));
       }
-      res.status(INTERNAL_SERVER_STATUS).send({ message: SERVER_ERROR_MESSAGE });
+      return next(err);
     });
 };
-const updateLike = (req, res, data) => {
+const updateLike = (req, res, next, data) => {
   const { cardId } = req.params;
   Card
     .findByIdAndUpdate(
@@ -61,19 +67,18 @@ const updateLike = (req, res, data) => {
       data,
       { new: true },
     )
+    .orFail(() => {
+      throw new NotFound(INVALID_ID_CARD_MESSAGE);
+    })
+    .populate(['owner', 'likes'])
     .then((card) => {
-      if (!card) {
-        res.status(NOT_FOUND_STATUS).send({ message: INVALID_ID_CARD_MESSAGE });
-        return;
-      }
       res.send({ card });
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
-        res.status(BAD_REQUEST_STATUS).send({ message: INVALID_LIKE_CARD_MESSAGE });
-        return;
+        return next(new BadRequest(INVALID_LIKE_CARD_MESSAGE));
       }
-      res.status(INTERNAL_SERVER_STATUS).send({ message: SERVER_ERROR_MESSAGE });
+      return next(err);
     });
 };
 module.exports.putLike = (req, res) => {

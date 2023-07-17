@@ -1,7 +1,10 @@
 const OK_STATUS = 200;
 const CREATED_STATUS = 201;
 const BAD_REQUEST_STATUS = 400;
+const UNAUTH_STATUS = 401;
+const FORBIDDEN_STATUS = 403;
 const NOT_FOUND_STATUS = 404;
+const CONFLICT_STATUS = 409;
 const INTERNAL_SERVER_STATUS = 500;
 
 const SERVER_ERROR_MESSAGE = 'На сервере произошла ошибка';
@@ -13,12 +16,17 @@ const INVALID_ADD_CARD_MESSAGE = ' Переданы некорректные д�
 const CARD_NOT_FOUND_MESSAGE = 'Карточка с указанным _id не найдена';
 const INVALID_LIKE_CARD_MESSAGE = 'Переданы некорректные данные для постановки/снятии лайка';
 const INVALID_ID_CARD_MESSAGE = ' Передан несуществующий _id карточки';
+const CONFLICT_EMAIL_MESSAGE = 'Этот email уже зарегестрирован';
+const FORBIDDEN_DELETE_CARD_MESSAGE = 'Запрещено удалять чужую карточку';
 const SECRET_KEY = 'some-secret-key';
 module.exports = {
   OK_STATUS,
   CREATED_STATUS,
   BAD_REQUEST_STATUS,
+  UNAUTH_STATUS,
+  FORBIDDEN_STATUS,
   NOT_FOUND_STATUS,
+  CONFLICT_STATUS,
   INTERNAL_SERVER_STATUS,
   SERVER_ERROR_MESSAGE,
   INVALID_ADD_USER_MESSAGE,
@@ -29,5 +37,7 @@ module.exports = {
   CARD_NOT_FOUND_MESSAGE,
   INVALID_LIKE_CARD_MESSAGE,
   INVALID_ID_CARD_MESSAGE,
+  CONFLICT_EMAIL_MESSAGE,
+  FORBIDDEN_DELETE_CARD_MESSAGE,
   SECRET_KEY,
 };
