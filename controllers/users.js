@@ -94,10 +94,8 @@ module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      // создадим токен
       const token = jwt.sign({ _id: user._id }, SECRET_KEY, { expiresIn: '7d' });
-      // вернём токен
-      res.send({ token });
+      res.status(201).send({ token });
     })
     .catch((err) => {
       if (err.code === 11000) {
