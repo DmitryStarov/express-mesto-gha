@@ -14,8 +14,8 @@ const { PORT = 3000 } = process.env;
 mongoose.connect(URL);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/singin', validateLogin, login);
-app.use('/singup', validatePostUser, postUser);
+app.use('/signin', validateLogin, login);
+app.use('/signup', validatePostUser, postUser);
 
 app.use(auth);
 app.use('/users', routeUsers);

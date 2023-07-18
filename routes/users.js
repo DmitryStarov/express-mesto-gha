@@ -2,7 +2,6 @@ const router = require('express').Router();
 const {
   getUsers,
   getUserInfo,
-  // postUser,
   patchUser,
   patchAvatar,
   getCurrentUser,
