@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
 const { REG_URL, INVALID_EMAIL, INVALID_URL } = require('../utils/constants');
+const AuthError = require('../errors/AuthError');
 
 const { Schema } = mongoose;
 
@@ -50,18 +51,21 @@ const userSchema = new Schema(
     versionKey: false,
   },
 );
-userSchema.static.findUserByCredentials = (email, password) => this.findOne({ email }).select('+password')
-  .then((user) => {
-    if (!user) {
-      return Promise.reject(new Error('Неправильные почта или пароль'));
-    }
-    return bcrypt.compare(password, user.password)
-      .then((matched) => {
-        if (!matched) {
-          return Promise.reject(new Error('Неправильные почта или пароль'));
-        }
-        return user;
-      });
-  });
+userSchema.statics.findUserByCredentials = function (email, password) {
+  return this.findOne({ email }).select('+password')
+    .then((user) => {
+      if (!user) {
+        return Promise.reject(new AuthError('Неправильные почта или пароль'));
+      }
+      return bcrypt.compare(password, user.password)
+        .then((matched) => {
+          if (!matched) { // отклоняем промис
+            return Promise.reject(new AuthError('Неправильные почта или пароль'));
+          }
+
+          return user;
+        });
+    });
+};
 
 module.exports = mongoose.model('user', userSchema);
