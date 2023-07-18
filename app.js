@@ -12,10 +12,11 @@ const app = express();
 const URL = 'mongodb://localhost:27017/mestodb';
 const { PORT = 3000 } = process.env;
 mongoose.connect(URL);
-app.use('/singin', validateLogin, login);
-app.use('/singup', validatePostUser, postUser);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/singin', validateLogin, login);
+app.use('/singup', validatePostUser, postUser);
+
 app.use(auth);
 app.use('/users', routeUsers);
 app.use('/cards', routeCards);
