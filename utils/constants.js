@@ -16,9 +16,13 @@ const INVALID_ADD_CARD_MESSAGE = ' Переданы некорректные д�
 const CARD_NOT_FOUND_MESSAGE = 'Карточка с указанным _id не найдена';
 const INVALID_LIKE_CARD_MESSAGE = 'Переданы некорректные данные для постановки/снятии лайка';
 const INVALID_ID_CARD_MESSAGE = ' Передан несуществующий _id карточки';
+const INVALID_EMAIL = 'Неверно указан email';
+const INVALID_URL = 'Неверно указан URL';
 const CONFLICT_EMAIL_MESSAGE = 'Этот email уже зарегестрирован';
 const FORBIDDEN_DELETE_CARD_MESSAGE = 'Запрещено удалять чужую карточку';
 const SECRET_KEY = 'some-secret-key';
+const REG_URL = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$/;
+const REG_ID = /^[0-9a-fA-F]{24}$/;
 module.exports = {
   OK_STATUS,
   CREATED_STATUS,
@@ -37,7 +41,11 @@ module.exports = {
   CARD_NOT_FOUND_MESSAGE,
   INVALID_LIKE_CARD_MESSAGE,
   INVALID_ID_CARD_MESSAGE,
+  INVALID_EMAIL,
+  INVALID_URL,
   CONFLICT_EMAIL_MESSAGE,
   FORBIDDEN_DELETE_CARD_MESSAGE,
   SECRET_KEY,
+  REG_URL,
+  REG_ID,
 };

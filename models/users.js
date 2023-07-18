@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
+const { REG_URL, INVALID_EMAIL, INVALID_URL } = require('../utils/constants');
 
 const { Schema } = mongoose;
 
@@ -22,6 +23,12 @@ const userSchema = new Schema(
     avatar: {
       type: String,
       default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
+      validate: {
+        validator(url) {
+          return REG_URL.test(url);
+        },
+        message: INVALID_URL,
+      },
     },
     email: {
       type: String,
@@ -29,13 +36,13 @@ const userSchema = new Schema(
       unique: true,
       validate: {
         validator: (email) => validator.isEmail(email),
-        message: 'Неверно указана почта',
+        message: INVALID_EMAIL,
       },
     },
     password: {
       type: String,
       required: true,
-      minlength: 8,
+      minlength: 6,
       select: false,
     },
   },
