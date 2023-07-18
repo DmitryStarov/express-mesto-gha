@@ -36,10 +36,25 @@ const validateLogin = celebrate({
   }),
 });
 
+const validatePostCard = celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30).required(),
+    link: Joi.string().required().regex(REG_URL),
+  }),
+});
+
+const validateUpdateLike = celebrate({
+  params: Joi.object().keys({
+    cardId: Joi.string().required().regex(REG_ID),
+  }),
+});
+
 module.exports = {
   validatePostUser,
   validateGetUser,
   validatePathUser,
   validatePathAvatar,
   validateLogin,
+  validatePostCard,
+  validateUpdateLike,
 };
