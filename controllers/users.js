@@ -4,9 +4,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/users');
 const {
+  OK_STATUS,
   INTERNAL_SERVER_STATUS,
+  CONFLICT_STATUS,
   SERVER_ERROR_MESSAGE,
-  INVALID_ADD_USER_MESSAGE,
   USER_NOT_FOUND_MESSAGE,
   INVALID_UPDATE_USER_MESSAGE,
   INVALID_UPDATE_AVATAR_MESSAGE,
@@ -65,10 +66,17 @@ module.exports.postUser = (req, res, next) => {
       });
     })
     .catch((err) => {
-      if (err instanceof mongoose.Error.ValidationError) {
-        return next(new BadRequest(INVALID_ADD_USER_MESSAGE));
+      if (err.code === 11000) {
+        next(new CONFLICT_STATUS(CONFLICT_EMAIL_MESSAGE));
+      } else if (err instanceof mongoose.Error.ValidationError) {
+        const message = Object.values(err.errors)
+          .map((error) => error.message)
+          .join('; ');
+
+        next(new BadRequest(message));
+      } else {
+        next(err);
       }
-      return next(err);
     });
 };
 const updateUserData = (req, res, next, data, badRequestMessage) => {
@@ -78,7 +86,7 @@ const updateUserData = (req, res, next, data, badRequestMessage) => {
       throw new BadRequest(badRequestMessage);
     })
     .then((user) => {
-      res.send(user);
+      res.send({ user });
     })
     .catch(next);
 };
@@ -95,7 +103,7 @@ module.exports.login = (req, res, next) => {
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, SECRET_KEY, { expiresIn: '7d' });
-      res.status(201).send({ token });
+      res.status(OK_STATUS).send({ token });
     })
     .catch((err) => {
       if (err.code === 11000) {
@@ -111,7 +119,7 @@ module.exports.getCurrentUser = (req, res, next) => {
       throw new BadRequest(USER_NOT_FOUND_MESSAGE);
     })
     .then((user) => {
-      res.send(user);
+      res.status(OK_STATUS).send(user);
     })
     .catch(next);
 };
