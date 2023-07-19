@@ -37,11 +37,11 @@ module.exports.deleteCard = (req, res, next) => {
   const { cardId } = req.params;
   Card
     .findById(cardId)
-    .orFail(() => {
-      throw new NotFound(CARD_NOT_FOUND_MESSAGE);
-    })
     .populate(['owner', 'likes'])
     .then((card) => {
+      if (!card) {
+        throw new NotFound(CARD_NOT_FOUND_MESSAGE);
+      }
       if (!card.owner.equals(req.user._id)) {
         throw new Forbidden(FORBIDDEN_DELETE_CARD_MESSAGE);
       } else {
