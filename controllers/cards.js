@@ -67,11 +67,11 @@ const updateLike = (req, res, next, data) => {
       data,
       { new: true },
     )
-    .orFail(() => {
-      throw new NotFound(INVALID_ID_CARD_MESSAGE);
-    })
     .populate(['owner', 'likes'])
     .then((card) => {
+      if (!card) {
+        throw new NotFound(INVALID_ID_CARD_MESSAGE);
+      }
       res.send({ card });
     })
     .catch((err) => {

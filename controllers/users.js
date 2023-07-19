@@ -26,10 +26,10 @@ module.exports.getUsers = (req, res) => {
 module.exports.getUserInfo = (req, res, next) => {
   const { userId } = req.params;
   User.findById(userId)
-    .orFail(() => {
-      throw new NotFound(USER_NOT_FOUND_MESSAGE);
-    })
     .then((user) => {
+      if (!user) {
+        throw new NotFound(USER_NOT_FOUND_MESSAGE);
+      }
       res.send({ user });
     })
     .catch((err) => {
@@ -75,10 +75,10 @@ module.exports.postUser = (req, res, next) => {
 const updateUserData = (req, res, next, data, badRequestMessage) => {
   User
     .findByIdAndUpdate(req.user._id, data, { new: true, runValidators: true })
-    .orFail(() => {
-      throw new BadRequest(badRequestMessage);
-    })
     .then((user) => {
+      if (!user) {
+        throw new BadRequest(badRequestMessage);
+      }
       res.send({ user });
     })
     .catch(next);
@@ -103,11 +103,11 @@ module.exports.login = (req, res, next) => {
 module.exports.getCurrentUser = (req, res, next) => {
   const userId = req.user._id;
   User.findById(userId)
-    .orFail(() => {
-      throw new BadRequest(USER_NOT_FOUND_MESSAGE);
-    })
     .then((user) => {
-      res.send(user);
+      if (!user) {
+        BadRequest(USER_NOT_FOUND_MESSAGE);
+      }
+      res.send({ user });
     })
     .catch(next);
 };
