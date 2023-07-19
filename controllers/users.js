@@ -76,6 +76,7 @@ const updateUserData = (req, res, next, data, badRequestMessage) => {
   User
     .findByIdAndUpdate(req.user._id, data, { new: true, runValidators: true })
     .then((user) => {
+      console.log(req.user._id);
       if (!user) {
         throw new BadRequest(badRequestMessage);
       }
@@ -103,6 +104,7 @@ module.exports.login = (req, res, next) => {
 module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
+      console.log(req.user._id);
       if (!user) {
         BadRequest(USER_NOT_FOUND_MESSAGE);
       }
