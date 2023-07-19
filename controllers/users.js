@@ -74,9 +74,8 @@ module.exports.postUser = (req, res, next) => {
 };
 const updateUserData = (req, res, next, data, badRequestMessage) => {
   User
-    .findByIdAndUpdate(req.user._id, data, { new: true, runValidators: true })
+    .findByIdAndUpdate(req.user._id, data, { new: true, runValidators: true, upsert: false })
     .then((user) => {
-      console.log(req.user._id);
       if (!user) {
         throw new BadRequest(badRequestMessage);
       }
