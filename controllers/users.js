@@ -6,7 +6,6 @@ const User = require('../models/users');
 const {
   OK_STATUS,
   INTERNAL_SERVER_STATUS,
-  CONFLICT_STATUS,
   SERVER_ERROR_MESSAGE,
   USER_NOT_FOUND_MESSAGE,
   INVALID_UPDATE_USER_MESSAGE,
@@ -67,7 +66,7 @@ module.exports.postUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.code === 11000) {
-        next(new CONFLICT_STATUS(CONFLICT_EMAIL_MESSAGE));
+        next(new ConflictRequest('Этот email уже зарегистрирован'));
       } else if (err instanceof mongoose.Error.ValidationError) {
         const message = Object.values(err.errors)
           .map((error) => error.message)
