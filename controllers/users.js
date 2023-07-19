@@ -1,5 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const mongoose = require('mongoose');
+const { Error: { ValidationError } } = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/users');
@@ -12,6 +13,7 @@ const {
   INVALID_UPDATE_AVATAR_MESSAGE,
   CONFLICT_EMAIL_MESSAGE,
   SECRET_KEY,
+  INVALID_ADD_USER_MESSAGE,
 } = require('../utils/constants');
 const BadRequest = require('../errors/BadRequest');
 const NotFound = require('../errors/NotFound');
@@ -66,16 +68,12 @@ module.exports.postUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.code === 11000) {
-        next(new ConflictRequest('Этот email уже зарегистрирован'));
-      } else if (err instanceof mongoose.Error.ValidationError) {
-        const message = Object.values(err.errors)
-          .map((error) => error.message)
-          .join('; ');
-
-        next(new BadRequest(message));
-      } else {
-        next(err);
+        return next(new ConflictRequest(CONFLICT_EMAIL_MESSAGE));
       }
+      if (err instanceof ValidationError) {
+        return next(new BadRequest(INVALID_ADD_USER_MESSAGE));
+      }
+      return next(err);
     });
 };
 const updateUserData = (req, res, next, data, badRequestMessage) => {
