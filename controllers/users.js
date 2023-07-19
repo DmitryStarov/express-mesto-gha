@@ -1,19 +1,18 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const mongoose = require('mongoose');
-const { Error: { ValidationError } } = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/users');
 const {
-  OK_STATUS,
   INTERNAL_SERVER_STATUS,
   SERVER_ERROR_MESSAGE,
+  INVALID_ADD_USER_MESSAGE,
   USER_NOT_FOUND_MESSAGE,
   INVALID_UPDATE_USER_MESSAGE,
   INVALID_UPDATE_AVATAR_MESSAGE,
   CONFLICT_EMAIL_MESSAGE,
   SECRET_KEY,
-  INVALID_ADD_USER_MESSAGE,
+  OK_STATUS,
 } = require('../utils/constants');
 const BadRequest = require('../errors/BadRequest');
 const NotFound = require('../errors/NotFound');
@@ -70,7 +69,7 @@ module.exports.postUser = (req, res, next) => {
       if (err.code === 11000) {
         return next(new ConflictRequest(CONFLICT_EMAIL_MESSAGE));
       }
-      if (err instanceof ValidationError) {
+      if (err instanceof mongoose.Error.ValidationError) {
         return next(new BadRequest(INVALID_ADD_USER_MESSAGE));
       }
       return next(err);
@@ -102,12 +101,7 @@ module.exports.login = (req, res, next) => {
       const token = jwt.sign({ _id: user._id }, SECRET_KEY, { expiresIn: '7d' });
       res.status(OK_STATUS).send({ token });
     })
-    .catch((err) => {
-      if (err.code === 11000) {
-        return next(new ConflictRequest(CONFLICT_EMAIL_MESSAGE));
-      }
-      return next(err);
-    });
+    .catch(next);
 };
 module.exports.getCurrentUser = (req, res, next) => {
   const userId = req.user._id;
@@ -116,7 +110,7 @@ module.exports.getCurrentUser = (req, res, next) => {
       throw new BadRequest(USER_NOT_FOUND_MESSAGE);
     })
     .then((user) => {
-      res.status(OK_STATUS).send(user);
+      res.send(user);
     })
     .catch(next);
 };
