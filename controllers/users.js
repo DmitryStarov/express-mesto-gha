@@ -83,13 +83,13 @@ const updateUserData = (req, res, next, data, badRequestMessage) => {
     })
     .catch(next);
 };
-module.exports.patchUser = (req, res) => {
+module.exports.patchUser = (req, res, next) => {
   const { name, about } = req.body;
-  return updateUserData(req, res, { name, about }, INVALID_UPDATE_USER_MESSAGE);
+  return updateUserData(req, res, next, { name, about }, INVALID_UPDATE_USER_MESSAGE);
 };
-module.exports.patchAvatar = (req, res) => {
+module.exports.patchAvatar = (req, res, next) => {
   const { avatar } = req.body;
-  return updateUserData(req, res, { avatar }, INVALID_UPDATE_AVATAR_MESSAGE);
+  return updateUserData(req, res, next, { avatar }, INVALID_UPDATE_AVATAR_MESSAGE);
 };
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
