@@ -4,8 +4,8 @@ const BAD_REQUEST_STATUS = 400;
 const UNAUTH_STATUS = 401;
 const FORBIDDEN_STATUS = 403;
 const NOT_FOUND_STATUS = 404;
-const CONFLICT_STATUS = 409;
 const INTERNAL_SERVER_STATUS = 500;
+const CONFLICT_STATUS = 409;
 
 const SERVER_ERROR_MESSAGE = 'На сервере произошла ошибка';
 const INVALID_ADD_USER_MESSAGE = 'Переданы некорректные данные при создании пользователя';
