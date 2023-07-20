@@ -16,7 +16,7 @@ const {
 } = require('../utils/constants');
 const BadRequest = require('../errors/BadRequest');
 const NotFound = require('../errors/NotFound');
-const ConflictRequest = require('../errors/ConflictRequest');
+//const ConflictRequest = require('../errors/ConflictRequest');
 
 module.exports.getUsers = (req, res) => {
   User.find({})
@@ -67,7 +67,7 @@ module.exports.postUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.code === 11000) {
-        return next(new ConflictRequest(CONFLICT_EMAIL_MESSAGE));
+        return next(new BadRequest(CONFLICT_EMAIL_MESSAGE));
       }
       if (err instanceof mongoose.Error.ValidationError) {
         return next(new BadRequest(INVALID_ADD_USER_MESSAGE));
