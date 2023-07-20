@@ -7,4 +7,4 @@ class Forbidden extends Error {
   }
 }
 
-exports.module = Forbidden;
+module.exports = Forbidden;
