@@ -1,4 +1,7 @@
+/* eslint-disable no-unused-vars */
 const mongoose = require('mongoose');
+const validator = require('validator');
+const { REG_URL, INVALID_URL } = require('../utils/constants');
 
 const { Schema } = mongoose;
 const { ObjectId } = mongoose.Schema.Types;
@@ -13,6 +16,12 @@ const cardSchema = new Schema(
     link: {
       type: String,
       required: true,
+      validate: {
+        validator(url) {
+          return REG_URL.test(url);
+        },
+        message: INVALID_URL,
+      },
     },
     owner: {
       type: ObjectId,
