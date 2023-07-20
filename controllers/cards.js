@@ -38,19 +38,19 @@ module.exports.deleteCard = (req, res, next) => {
   Card
     .findById(cardId)
     .populate(['owner', 'likes'])
+    // eslint-disable-next-line consistent-return
     .then((card) => {
       if (!card) {
-        throw new NotFound(CARD_NOT_FOUND_MESSAGE);
+        return next(new NotFound(CARD_NOT_FOUND_MESSAGE));
       }
-      if (card.owner.valueOf() !== req.user._id) {
-        throw new Forbidden(FORBIDDEN_DELETE_CARD_MESSAGE);
-      } else {
-        Card.deleteOne(card)
-          .then(() => {
-            res.send({ card });
-          })
-          .catch(next);
+      if (!card.owner.equals(req.user._id)) {
+        return next(new Forbidden(FORBIDDEN_DELETE_CARD_MESSAGE));
       }
+      Card.deleteOne(card)
+        .then(() => {
+          res.send({ card });
+        })
+        .catch(next);
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
