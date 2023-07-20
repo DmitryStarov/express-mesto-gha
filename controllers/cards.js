@@ -40,11 +40,11 @@ module.exports.deleteCard = (req, res, next) => {
     .populate(['owner', 'likes'])
     // eslint-disable-next-line consistent-return
     .then((card) => {
-      if (!card.owner.equals(req.user._id)) {
-        return next(new Forbidden(FORBIDDEN_DELETE_CARD_MESSAGE));
-      }
       if (!card) {
         return next(new NotFound(CARD_NOT_FOUND_MESSAGE));
+      }
+      if (card.owner.valueOf() !== req.user._id) {
+        return next(new Forbidden(FORBIDDEN_DELETE_CARD_MESSAGE));
       }
       Card.deleteOne(card)
         .then(() => {
