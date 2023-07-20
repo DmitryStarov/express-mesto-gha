@@ -37,6 +37,7 @@ module.exports.deleteCard = (req, res, next) => {
   const { cardId } = req.params;
   Card
     .findById(cardId)
+    .populate(['owner', 'likes'])
     // eslint-disable-next-line consistent-return
     .then((card) => {
       if (!card) {
