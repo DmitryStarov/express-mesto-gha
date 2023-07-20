@@ -41,8 +41,7 @@ module.exports.deleteCard = (req, res, next) => {
     .then((card) => {
       if (!card) {
         throw new NotFound(CARD_NOT_FOUND_MESSAGE);
-      }
-      if (!card.owner.equals(req.user._id)) {
+      } else if (!card.owner.equals(req.user._id)) {
         throw new Forbidden(FORBIDDEN_DELETE_CARD_MESSAGE);
       } else {
         Card.deleteOne(card)
