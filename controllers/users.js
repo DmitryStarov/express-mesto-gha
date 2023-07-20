@@ -67,7 +67,7 @@ module.exports.postUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.code === 11000) {
-        throw new ConflictRequest(CONFLICT_EMAIL_MESSAGE);
+        return next(new ConflictRequest(CONFLICT_EMAIL_MESSAGE));
       }
       if (err instanceof mongoose.Error.ValidationError) {
         return next(new BadRequest(INVALID_ADD_USER_MESSAGE));
