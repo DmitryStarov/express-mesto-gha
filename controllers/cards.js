@@ -81,11 +81,11 @@ const updateLike = (req, res, next, data) => {
       return next(err);
     });
 };
-module.exports.putLike = (req, res) => {
+module.exports.putLike = (req, res, next) => {
   const newLike = { $addToSet: { likes: req.user._id } };
-  return updateLike(req, res, newLike);
+  return updateLike(req, res, next, newLike);
 };
-module.exports.deleteLike = (req, res) => {
+module.exports.deleteLike = (req, res, next) => {
   const removedLike = { $pull: { likes: req.user._id } };
-  return updateLike(req, res, removedLike);
+  return updateLike(req, res, next, removedLike);
 };
