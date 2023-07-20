@@ -6,4 +6,5 @@ class ConflictRequest extends Error {
     this.statusCode = CONFLICT_STATUS;
   }
 }
-module.export = ConflictRequest;
+
+module.exports = ConflictRequest;
