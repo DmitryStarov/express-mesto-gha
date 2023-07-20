@@ -19,6 +19,7 @@ const INVALID_ID_CARD_MESSAGE = ' Передан несуществующий _i
 const INVALID_EMAIL = 'Неверно указан email';
 const INVALID_URL = 'Неверно указан URL';
 const CONFLICT_EMAIL_MESSAGE = 'Этот email уже зарегестрирован';
+const AUTH_ERR_MESSAGE = 'Необходимо авторизироваться';
 const FORBIDDEN_DELETE_CARD_MESSAGE = 'Запрещено удалять чужую карточку';
 const SECRET_KEY = 'some-secret-key';
 const REG_URL = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$/;
@@ -44,6 +45,7 @@ module.exports = {
   INVALID_EMAIL,
   INVALID_URL,
   CONFLICT_EMAIL_MESSAGE,
+  AUTH_ERR_MESSAGE,
   FORBIDDEN_DELETE_CARD_MESSAGE,
   SECRET_KEY,
   REG_URL,
